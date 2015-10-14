@@ -1,0 +1,23 @@
+package datacounter
+
+import (
+	"testing"
+	"net/http"
+	"net/http/httptest"
+)
+
+func TestResponseWriterCounter(t *testing.T) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		w.Write(data)
+	}
+	req, err := http.NewRequest("GET", "http://example.com/foo", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := httptest.NewRecorder()
+	counter := NewResponseWriterCounter(w)
+	handler(counter, req)
+	if counter.Count() != dataLen {
+		t.Fatal("count mismatch len of test data: %d != %d", counter.Count, len(data))
+	}
+}
