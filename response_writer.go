@@ -20,11 +20,8 @@ func NewResponseWriterCounter(rw http.ResponseWriter) *ResponseWriterCounter {
 
 func (counter *ResponseWriterCounter) Write(buf []byte) (int, error) {
 	n, err := counter.writer.Write(buf)
-	if err != nil {
-		return 0, err
-	}
 	atomic.AddUint64(&counter.count, uint64(n))
-	return n, nil
+	return n, err
 }
 
 func (counter *ResponseWriterCounter) Count() uint64 {

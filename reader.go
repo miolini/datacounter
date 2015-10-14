@@ -20,9 +20,6 @@ func NewReaderCounter(r io.Reader) *ReaderCounter {
 func (counter *ReaderCounter) Read(buf []byte) (int, error) {
 	n, err := counter.reader.Read(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
-	if err != nil {
-		return n, err
-	}
 	return n, nil
 }
 
