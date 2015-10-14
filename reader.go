@@ -7,7 +7,7 @@ import (
 
 type ReaderCounter struct {
 	io.Reader
-	count uint64
+	count  uint64
 	reader io.Reader
 }
 

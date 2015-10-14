@@ -2,13 +2,13 @@ package datacounter
 
 import (
 	"io"
-	"sync/atomic"
 	"net/http"
+	"sync/atomic"
 )
 
 type ResponseWriterCounter struct {
 	http.ResponseWriter
-	count uint64
+	count  uint64
 	writer io.Writer
 }
 

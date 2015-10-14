@@ -7,7 +7,7 @@ import (
 
 type WriterCounter struct {
 	io.Writer
-	count uint64
+	count  uint64
 	writer io.Writer
 }
 

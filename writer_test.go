@@ -1,8 +1,8 @@
 package datacounter
 
 import (
-	"testing"
 	"bytes"
+	"testing"
 )
 
 func TestWriterCounter(t *testing.T) {

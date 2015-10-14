@@ -1,10 +1,10 @@
 package datacounter
 
 import (
-	"testing"
 	"bytes"
 	"io"
 	"io/ioutil"
+	"testing"
 )
 
 var data = []byte("Hello, World!")
