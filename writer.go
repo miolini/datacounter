@@ -20,7 +20,7 @@ func NewWriterCounter(w io.Writer) *WriterCounter {
 func (counter *WriterCounter) Write(buf []byte) (int, error) {
 	n, err := counter.writer.Write(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
-	return n, nil
+	return n, err
 }
 
 func (counter *WriterCounter) Count() uint64 {
