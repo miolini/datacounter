@@ -10,6 +10,6 @@ func TestWriterCounter(t *testing.T) {
 	counter := NewWriterCounter(&buf)
 	counter.Write(data)
 	if counter.Count() != dataLen {
-		t.Fatal("count mismatch len of test data: %d != %d", counter.Count, len(data))
+		t.Fatalf("count mismatch len of test data: %d != %d", counter.Count(), len(data))
 	}
 }

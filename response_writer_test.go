@@ -18,6 +18,6 @@ func TestResponseWriterCounter(t *testing.T) {
 	counter := NewResponseWriterCounter(w)
 	handler(counter, req)
 	if counter.Count() != dataLen {
-		t.Fatal("count mismatch len of test data: %d != %d", counter.Count, len(data))
+		t.Fatalf("count mismatch len of test data: %d != %d", counter.Count(), len(data))
 	}
 }
