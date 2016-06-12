@@ -1,6 +1,8 @@
 package datacounter
 
 import (
+	"bufio"
+	"net"
 	"net/http"
 	"sync/atomic"
 )
@@ -31,6 +33,10 @@ func (counter *ResponseWriterCounter) Header() http.Header {
 
 func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
 	counter.writer.WriteHeader(statusCode)
+}
+
+func (counter *ResponseWriterCounter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	return counter.writer.(http.Hijacker).Hijack()
 }
 
 // Count function return counted bytes
