@@ -1,7 +1,6 @@
 package datacounter
 
 import (
-	"io"
 	"net/http"
 	"sync/atomic"
 )
@@ -10,7 +9,7 @@ import (
 type ResponseWriterCounter struct {
 	http.ResponseWriter
 	count  uint64
-	writer io.Writer
+	writer http.ResponseWriter
 }
 
 // NewResponseWriterCounter function create new ResponseWriterCounter
@@ -24,6 +23,14 @@ func (counter *ResponseWriterCounter) Write(buf []byte) (int, error) {
 	n, err := counter.writer.Write(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
 	return n, err
+}
+
+func (counter *ResponseWriterCounter) Header() http.Header {
+	return counter.writer.Header()
+}
+
+func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
+	counter.writer.WriteHeader(statusCode)
 }
 
 // Count function return counted bytes
