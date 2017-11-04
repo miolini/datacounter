@@ -5,19 +5,22 @@ import (
 	"net"
 	"net/http"
 	"sync/atomic"
+	"time"
 )
 
 // ResponseWriterCounter is counter for http.ResponseWriter
 type ResponseWriterCounter struct {
 	http.ResponseWriter
-	count  uint64
-	writer http.ResponseWriter
+	count   uint64
+	started time.Time
+	writer  http.ResponseWriter
 }
 
 // NewResponseWriterCounter function create new ResponseWriterCounter
 func NewResponseWriterCounter(rw http.ResponseWriter) *ResponseWriterCounter {
 	return &ResponseWriterCounter{
 		writer: rw,
+		started: time.Now(),
 	}
 }
 
@@ -32,6 +35,7 @@ func (counter *ResponseWriterCounter) Header() http.Header {
 }
 
 func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
+	counter.Header().Set("X-Runtime", fmt.Sprintf("%.6f", time.Since(counter.Started).Seconds()))
 	counter.writer.WriteHeader(statusCode)
 }
 
@@ -42,4 +46,8 @@ func (counter *ResponseWriterCounter) Hijack() (net.Conn, *bufio.ReadWriter, err
 // Count function return counted bytes
 func (counter *ResponseWriterCounter) Count() uint64 {
 	return atomic.LoadUint64(&counter.count)
+}
+
+func (counter *ResponseWriterCounter) Started() time.Time {
+	return counter.started
 }
