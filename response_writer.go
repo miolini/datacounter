@@ -2,6 +2,7 @@ package datacounter
 
 import (
 	"bufio"
+	"fmt"
 	"net"
 	"net/http"
 	"sync/atomic"
