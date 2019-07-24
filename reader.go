@@ -8,19 +8,18 @@ import (
 // ReaderCounter is counter for io.Reader
 type ReaderCounter struct {
 	io.Reader
-	count  uint64
-	reader io.Reader
+	count uint64
 }
 
 // NewReaderCounter function for create new ReaderCounter
 func NewReaderCounter(r io.Reader) *ReaderCounter {
 	return &ReaderCounter{
-		reader: r,
+		Reader: r,
 	}
 }
 
 func (counter *ReaderCounter) Read(buf []byte) (int, error) {
-	n, err := counter.reader.Read(buf)
+	n, err := counter.Reader.Read(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
 	return n, err
 }

@@ -8,19 +8,18 @@ import (
 // WriterCounter is counter for io.Writer
 type WriterCounter struct {
 	io.Writer
-	count  uint64
-	writer io.Writer
+	count uint64
 }
 
 // NewWriterCounter function create new WriterCounter
 func NewWriterCounter(w io.Writer) *WriterCounter {
 	return &WriterCounter{
-		writer: w,
+		Writer: w,
 	}
 }
 
 func (counter *WriterCounter) Write(buf []byte) (int, error) {
-	n, err := counter.writer.Write(buf)
+	n, err := counter.Writer.Write(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
 	return n, err
 }
