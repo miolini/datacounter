@@ -1,23 +1,25 @@
 language: go
-
-# The feature/go15 branch uses new features in go15. Only testing this branch
-# against tip which has the features.
-go:
-  - 1.6
-  - tip
-
-# Setting sudo access to false will let Travis CI use containers rather than
-# VMs to run the tests. For more details see:
-# - http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-# - http://docs.travis-ci.com/user/workers/standard-infrastructure/
 sudo: false
 
-install: 
+go:
+  - "1.6"
+  - "1.7"
+  - "1.8"
+  - "1.9"
+  - "1.10"
+  - "1.11"
+  - "1.12"
+  - "1.13"
+  - "master"
 
-# The default script is go test -v ./... which will test everything
-# in the vendor directory. We don't need to test all dependent packages.
-# Only testing this project.
+matrix:
+  allow_failures:
+    - go: master
+
+install:
+  - go install
+
 script:
-  - GO15VENDOREXPERIMENT=1 go test -v .
-
-notifications:
+  - go test -v ./...
+  - diff <(goimports -d *.go) <(printf "")
+  - diff <(golint *.go) <(printf "")
