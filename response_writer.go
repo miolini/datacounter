@@ -24,21 +24,25 @@ func NewResponseWriterCounter(rw http.ResponseWriter) *ResponseWriterCounter {
 	}
 }
 
+// Write returns underlying Write result, while counting data size
 func (counter *ResponseWriterCounter) Write(buf []byte) (int, error) {
 	n, err := counter.ResponseWriter.Write(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
 	return n, err
 }
 
+// Header returns underlying Header result
 func (counter *ResponseWriterCounter) Header() http.Header {
 	return counter.ResponseWriter.Header()
 }
 
+// WriteHeader returns underlying WriteHeader, while setting Runtime header
 func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
 	counter.Header().Set("X-Runtime", fmt.Sprintf("%.6f", time.Since(counter.started).Seconds()))
 	counter.ResponseWriter.WriteHeader(statusCode)
 }
 
+// Hijack returns underlying Hijack
 func (counter *ResponseWriterCounter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
 	return counter.ResponseWriter.(http.Hijacker).Hijack()
 }
@@ -48,6 +52,7 @@ func (counter *ResponseWriterCounter) Count() uint64 {
 	return atomic.LoadUint64(&counter.count)
 }
 
+// Started returns started value
 func (counter *ResponseWriterCounter) Started() time.Time {
 	return counter.started
 }
