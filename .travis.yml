@@ -18,8 +18,8 @@ matrix:
 
 install:
   - go install
+  - go get -u golang.org/x/lint/golint
 
 script:
   - go test -v ./...
-  - diff <(goimports -d *.go) <(printf "")
   - diff <(golint *.go) <(printf "")
