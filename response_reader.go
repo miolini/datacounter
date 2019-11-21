@@ -11,19 +11,21 @@ type ResponseBodyCounter struct {
 	count uint64
 }
 
-// NewReadCounter function for create new ResponseBodyCounter
+// NewResponseBodyCounter function for create new ResponseBodyCounter
 func NewResponseBodyCounter(r io.ReadCloser) *ResponseBodyCounter {
 	return &ResponseBodyCounter{
 		ReadCloser: r,
 	}
 }
 
+// Read invokes the underlying Reader
 func (counter *ResponseBodyCounter) Read(buf []byte) (int, error) {
 	n, err := counter.ReadCloser.Read(buf)
 	atomic.AddUint64(&counter.count, uint64(n))
 	return n, err
 }
 
+// Read invokes the underlying Closer
 func (counter *ResponseBodyCounter) Close() error {
 	return counter.ReadCloser.Close()
 }
