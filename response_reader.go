@@ -25,7 +25,7 @@ func (counter *ResponseBodyCounter) Read(buf []byte) (int, error) {
 	return n, err
 }
 
-// Read invokes the underlying Closer
+// Close invokes the underlying Closer
 func (counter *ResponseBodyCounter) Close() error {
 	return counter.ReadCloser.Close()
 }
