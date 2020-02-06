@@ -12,8 +12,9 @@ import (
 // ResponseWriterCounter is counter for http.ResponseWriter
 type ResponseWriterCounter struct {
 	http.ResponseWriter
-	count   uint64
-	started time.Time
+	count      uint64
+	started    time.Time
+	statusCode int
 }
 
 // NewResponseWriterCounter function create new ResponseWriterCounter
@@ -55,4 +56,9 @@ func (counter *ResponseWriterCounter) Count() uint64 {
 // Started returns started value
 func (counter *ResponseWriterCounter) Started() time.Time {
 	return counter.started
+}
+
+// StatusCode returns sent status code
+func (counter *ResponseWriterCounter) StatusCode() int {
+	return counter.statusCode
 }
