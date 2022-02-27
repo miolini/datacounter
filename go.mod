@@ -1,3 +1,3 @@
-module github.com/miolini/datacounter
+module golift.io/datacounter
 
-go 1.11
+go 1.17

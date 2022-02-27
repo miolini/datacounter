@@ -1,20 +1,10 @@
+# Simple go lint and test.
+os: linux
+dist: bionic
 language: go
-sudo: false
-
 go:
-  - "1.11"
-  - "1.12"
-  - "1.13"
-  - "master"
-
-matrix:
-  allow_failures:
-    - go: master
-
+  - 1.17.x
 install:
-  - go install
-  - go get -u golang.org/x/lint/golint
-
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.43.0
 script:
-  - go test -v ./...
-  - diff <(golint *.go) <(printf "")
+  - make test

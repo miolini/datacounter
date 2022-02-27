@@ -2,13 +2,22 @@
 
 Golang counters for readers/writers.
 
-[![Build Status](https://travis-ci.org/miolini/datacounter.svg)](https://travis-ci.org/miolini/datacounter) [![GoDoc](https://godoc.org/github.com/miolini/datacounter?status.svg)](http://godoc.org/github.com/miolini/datacounter)
+[![Build Status](https://travis-ci.org/golift/datacounter.svg)](https://travis-ci.org/golift/datacounter)
+
+[GoDoc](http://godoc.org/github.com/golift/datacounter)
+
+## Fork?
+
+This fork adds `.Read()` and `.Write()` method counters in addition to the existing byte counters.
 
 ## Examples
 
 ### ReaderCounter
 
 ```go
+
+import "golift.io/datacounter"
+
 buf := bytes.Buffer{}
 buf.Write(data)
 counter := datacounter.NewReaderCounter(&buf)
@@ -22,6 +31,8 @@ if counter.Count() != dataLen {
 ### WriterCounter
 
 ```go
+import "golift.io/datacounter"
+
 buf := bytes.Buffer{}
 counter := datacounter.NewWriterCounter(&buf)
 
@@ -34,6 +45,8 @@ if counter.Count() != dataLen {
 ### http.ResponseWriter Counter
 
 ```go
+import "golift.io/datacounter"
+
 handler := func(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
