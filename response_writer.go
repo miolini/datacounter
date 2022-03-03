@@ -39,6 +39,7 @@ func (counter *ResponseWriterCounter) Header() http.Header {
 
 // WriteHeader returns underlying WriteHeader, while setting Runtime header
 func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
+	counter.statusCode = statusCode
 	counter.Header().Set("X-Runtime", fmt.Sprintf("%.6f", time.Since(counter.started).Seconds()))
 	counter.ResponseWriter.WriteHeader(statusCode)
 }
