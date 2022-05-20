@@ -7,8 +7,8 @@ import (
 
 // ReaderCounter is counter for io.Reader
 type ReaderCounter struct {
-	io.Reader
 	count uint64
+	io.Reader
 }
 
 // NewReaderCounter function for create new ReaderCounter
