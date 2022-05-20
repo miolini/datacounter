@@ -7,8 +7,8 @@ import (
 
 // WriterCounter is counter for io.Writer
 type WriterCounter struct {
-	io.Writer
 	count uint64
+	io.Writer
 }
 
 // NewWriterCounter function create new WriterCounter
@@ -20,7 +20,18 @@ func NewWriterCounter(w io.Writer) *WriterCounter {
 
 func (counter *WriterCounter) Write(buf []byte) (int, error) {
 	n, err := counter.Writer.Write(buf)
-	atomic.AddUint64(&counter.count, uint64(n))
+
+	// Write() should always return a non-negative `n`.
+	// But since `n` is a signed integer, some custom
+	// implementation of an io.Writer may return negative
+	// values.
+	//
+	// Excluding such invalid values from counting,
+	// thus `if n >= 0`:
+	if n >= 0 {
+		atomic.AddUint64(&counter.count, uint64(n))
+	}
+
 	return n, err
 }
 
