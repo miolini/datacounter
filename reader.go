@@ -20,7 +20,18 @@ func NewReaderCounter(r io.Reader) *ReaderCounter {
 
 func (counter *ReaderCounter) Read(buf []byte) (int, error) {
 	n, err := counter.Reader.Read(buf)
-	atomic.AddUint64(&counter.count, uint64(n))
+
+	// Read() should always return a non-negative `n`.
+	// But since `n` is a signed integer, some custom
+	// implementation of an io.Reader may return negative
+	// values.
+	//
+	// Excluding such invalid values from counting,
+	// thus `if n >= 0`:
+	if n >= 0 {
+		atomic.AddUint64(&counter.count, uint64(n))
+	}
+
 	return n, err
 }
 
