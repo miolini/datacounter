@@ -7,9 +7,9 @@ import (
 
 // ReaderCounter is counter for io.Reader.
 type ReaderCounter struct {
-	io.Reader
 	count uint64
 	reads uint64
+	io.Reader
 }
 
 // NewReaderCounter function for create new ReaderCounter.
@@ -23,9 +23,19 @@ func NewReaderCounter(r io.Reader) *ReaderCounter {
 
 // Reads counts bytes read and increments read counter.
 func (counter *ReaderCounter) Read(buf []byte) (int, error) {
-	n, err := counter.Reader.Read(buf)
-	atomic.AddUint64(&counter.count, uint64(n))
 	atomic.AddUint64(&counter.reads, 1)
+
+	// Read() should always return a non-negative `n`.
+	// But since `n` is a signed integer, some custom
+	// implementation of an io.Reader may return negative
+	// values.
+	//
+	// Excluding such invalid values from counting,
+	// thus `if n >= 0`:
+	n, err := counter.Reader.Read(buf)
+	if n >= 0 {
+		atomic.AddUint64(&counter.count, uint64(n))
+	}
 
 	return n, err //nolint:wrapcheck
 }

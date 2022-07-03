@@ -45,13 +45,19 @@ func (counter *ResponseWriterCounter) Header() http.Header {
 
 // WriteHeader returns underlying WriteHeader, while setting Runtime header.
 func (counter *ResponseWriterCounter) WriteHeader(statusCode int) {
+	counter.statusCode = statusCode
 	counter.Header().Set("X-Runtime", fmt.Sprintf("%.6f", time.Since(counter.started).Seconds()))
 	counter.ResponseWriter.WriteHeader(statusCode)
 }
 
 // Hijack returns underlying Hijack.
 func (counter *ResponseWriterCounter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	return counter.ResponseWriter.(http.Hijacker).Hijack() //nolint:wrapcheck
+	hijack, exists := counter.ResponseWriter.(http.Hijacker)
+	if !exists {
+		return nil, nil, fmt.Errorf("writer does not support hijacking: %w", http.ErrHijacked)
+	}
+
+	return hijack.Hijack() //nolint:wrapcheck
 }
 
 // Count function return counted bytes.

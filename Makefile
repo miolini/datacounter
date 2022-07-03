@@ -9,7 +9,7 @@ test: lint
 
 lint:
 	# Test lint on four platforms.
-	GOOS=linux golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint
-	GOOS=darwin golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint
-	GOOS=windows golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint
-	GOOS=freebsd golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint
+	GOOS=linux golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint,exhaustivestruct
+	GOOS=darwin golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint,exhaustivestruct
+	GOOS=windows golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint,exhaustivestruct
+	GOOS=freebsd golangci-lint run --enable-all -D maligned,scopelint,interfacer,golint,exhaustivestruct
