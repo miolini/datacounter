@@ -21,7 +21,7 @@ func TestResponseWriterCounter(t *testing.T) {
 		_, _ = w.Write(data)
 	}
 
-	req, err := http.NewRequestWithContext(context.Background(), "GET", "http://example.com/foo", nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "http://example.com/foo", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
