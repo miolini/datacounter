@@ -63,3 +63,8 @@ func (counter *ResponseWriterCounter) Started() time.Time {
 func (counter *ResponseWriterCounter) StatusCode() int {
 	return counter.statusCode
 }
+
+// Unwrap returns the underlying ResponseWriter
+func (counter *ResponseWriterCounter) Unwrap() http.ResponseWriter {
+	return counter.ResponseWriter
+}
