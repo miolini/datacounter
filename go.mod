@@ -1,3 +1,3 @@
-module github.com/miolini/datacounter
+module github.com/shmul/datacounter
 
 go 1.11
